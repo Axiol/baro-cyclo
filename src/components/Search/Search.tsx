@@ -78,6 +78,8 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
   const handleSelect = ((center: LatLngExpression) => {
     // console.log(center);
     onCitySelect(center);
+    setValue('');
+    setSuggestions([]);
   });
 
   return(
