@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { LatLngExpression } from 'leaflet';
+import React, { useState } from 'react';
+import Map from './components/Map/Map';
+import Search from './components/Search/Search';
 
-function App() {
+const App = () => {
+  const [position, setPosition] = useState<LatLngExpression>([50.6337, 5.56759]);
+
+  const onCitySelect = (center: LatLngExpression) => {
+    // console.log(center);
+    setPosition(center);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Map position={position} />
+      <Search onCitySelect={(center: LatLngExpression) => {onCitySelect(center)}} />
     </div>
   );
-}
+};
 
 export default App;
