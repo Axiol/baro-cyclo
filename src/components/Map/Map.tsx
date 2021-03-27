@@ -18,7 +18,9 @@ const Map: FC<MapProps> = ({position}) => {
     const map = useMap();
     
     useEffect(() => {
-      map.setView(position);
+      map.setView(position, map.getZoom(), {
+        animate: true,
+      });
     });
 
     return null;
