@@ -5,6 +5,7 @@ export interface MapProps {
 }
 
 export interface GeocodingSuggestion {
+  id: string;
   name: string;
   center: LatLngExpression;
 }

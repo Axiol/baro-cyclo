@@ -1,5 +1,4 @@
 import React, { FC, useState, useEffect } from 'react';
-import { LatLngExpression } from 'leaflet';
 import styled from 'styled-components';
 import { GeocodingSuggestion } from '../../interfaces';
 import { SearchProps } from '../../interfaces';
@@ -55,12 +54,14 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
   const [value, setValue] = useState<string>('');
   useEffect(() => {
     if(value !== '') {
-      fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${value}.json?access_token=${process.env.REACT_APP_MAPBOX_KEY}&country=BE`).then((res: Response) => {
+      fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${value}.json?access_token=${process.env.REACT_APP_MAPBOX_KEY}&country=BE&types=place`).then((res: Response) => {
         return res.json();
       }).then((data: any) => {
         if(data.features) {
           const newSuggestion: GeocodingSuggestion[] = data.features.map((item:any) => {
+            // console.log(item);
             return {
+              id: item.id,
               name: item.place_name,
               center: [item.center[1], item.center[0]],
             }
@@ -75,9 +76,8 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
     }
   }, [value]);
 
-  const handleSelect = ((center: LatLngExpression) => {
-    // console.log(center);
-    onCitySelect(center);
+  const handleSelect = ((place: GeocodingSuggestion) => {
+    onCitySelect(place.center);
     setValue('');
     setSuggestions([]);
   });
@@ -97,7 +97,7 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
         <StyledSuggestions>
           {suggestions.map((suggestion: GeocodingSuggestion) => {
             return(
-              <StyledSuggestion key={suggestion.name} onClick={() => {handleSelect(suggestion.center)}}>{suggestion.name}</StyledSuggestion>
+              <StyledSuggestion key={suggestion.name} onClick={() => {handleSelect(suggestion)}}>{suggestion.name}</StyledSuggestion>
             );
           })}   
         </StyledSuggestions>
