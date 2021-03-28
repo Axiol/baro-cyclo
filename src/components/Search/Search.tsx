@@ -35,7 +35,7 @@ const StyledSuggestions = styled.div`
   font-family: sans-serif;
 `;
 
-const StyledSuggestion = styled.p`
+const StyledSuggestion = styled.p<{highlighted: boolean}>`
   border-bottom: 1px solid #ccc;
   margin: 0;
   padding: 10px 15px;
@@ -46,11 +46,16 @@ const StyledSuggestion = styled.p`
   }
 
   &:hover {
-    background-color: #e9e9e9;
+    background-color: #ccc;
   }
+
+  ${props => props.highlighted && `
+    background-color: #ccc;
+  `}
 `;
 
 const Search: FC<SearchProps> = ({onCitySelect}) => {
+  const [highlight, setHighlight] = useState<number>(-1);
   const [suggestions, setSuggestions] = useState<GeocodingSuggestion[]>([]);
   const [value, setValue] = useState<string>('');
   useEffect(() => {
@@ -77,6 +82,21 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
     }
   }, [value]);
 
+  const handleKeypress = ((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if(e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlight(highlight - 1 < 0 ? 0 : highlight - 1);
+    }
+    if(e.key === 'ArrowDown') {
+      e.preventDefault();
+      setHighlight(highlight + 1 > suggestions.length - 1 ? suggestions.length - 1 : highlight + 1);
+    }
+    if(e.key === 'Enter') {
+      // console.log(suggestions[highlight]);
+      handleSelect(suggestions[highlight]);
+    }
+  });
+
   const handleSelect = ((place: GeocodingSuggestion) => {
     const center = place.center.toString().split(',');
     let polygon: LatLngTuple[] = [];
@@ -97,8 +117,9 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
         // console.log(sortedPolygon);
 
         onCitySelect(place.center, sortedPolygon);
-        // setValue('');
-        // setSuggestions([]);
+        setValue('');
+        setSuggestions([]);
+        setHighlight(-1);
       }).catch((error2: any) => {
         console.log(error2);
       });
@@ -114,15 +135,22 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
         name="place"
         id="place"
         value={value}
-        onChange={(e) => {setValue(e.target.value)}}
+        onKeyDown={(e) => {handleKeypress(e)}}
+        onChange={(e) => {setValue(e.target.value); setHighlight(-1)}}
         autoComplete="off"
         placeholder="Cherchez votre ville..." />
 
       {suggestions.length > 0 &&
         <StyledSuggestions>
-          {suggestions.map((suggestion: GeocodingSuggestion) => {
+          {suggestions.map((suggestion: GeocodingSuggestion, index:number) => {
             return(
-              <StyledSuggestion key={suggestion.name} onClick={() => {handleSelect(suggestion)}}>{suggestion.name}</StyledSuggestion>
+              <StyledSuggestion 
+                key={suggestion.name}
+                highlighted={highlight === index ? true : false}
+                onClick={() => {handleSelect(suggestion)}}
+                onMouseOver={() => {setHighlight(-1)}}>
+                {suggestion.name}
+               </StyledSuggestion>
             );
           })}   
         </StyledSuggestions>
