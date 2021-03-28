@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap, Polygon } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MapProps } from '../../interfaces';
 
@@ -13,7 +13,7 @@ const StyledMapContainer = styled(MapContainer) `
   z-index: 1;
 `;
 
-const Map: FC<MapProps> = ({position}) => {
+const Map: FC<MapProps> = ({position, boundaries}) => {
   const UseMapComponent = () => {
     const map = useMap();
     
@@ -26,12 +26,14 @@ const Map: FC<MapProps> = ({position}) => {
     return null;
   }
 
+  const purpleOptions = { color: 'purple' }
+
   return(
     <StyledMapContainer center={position} zoom={15} scrollWheelZoom={false}>
       <TileLayer
         attribution='Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
         maxZoom={18}
-        id='mapbox/streets-v11'
+        id='mapbox/dark-v10'
         tileSize={512}
         zoomOffset={-1}
         accessToken={process.env.REACT_APP_MAPBOX_KEY}
@@ -39,6 +41,10 @@ const Map: FC<MapProps> = ({position}) => {
       />
 
       <UseMapComponent />
+
+      {boundaries !== [] &&
+        <Polygon pathOptions={purpleOptions} positions={boundaries} />
+      }
     </StyledMapContainer>
   );
 };

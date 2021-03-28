@@ -1,15 +1,16 @@
-import { LatLngExpression } from "leaflet";
+import { LatLngTuple } from "leaflet";
 
 export interface MapProps {
-  position: LatLngExpression;
+  position: LatLngTuple;
+  boundaries: LatLngTuple[];
 }
 
 export interface GeocodingSuggestion {
   id: string;
   name: string;
-  center: LatLngExpression;
+  center: LatLngTuple;
 }
 
 export interface SearchProps {
-  onCitySelect(center: LatLngExpression): void,
+  onCitySelect(center: LatLngTuple, polygon: LatLngTuple[]): void,
 }
