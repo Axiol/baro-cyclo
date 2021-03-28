@@ -29,7 +29,7 @@ const Map: FC<MapProps> = ({position, boundaries}) => {
   const purpleOptions = { color: 'purple' }
 
   return(
-    <StyledMapContainer center={position} zoom={15} scrollWheelZoom={false}>
+    <StyledMapContainer center={position} zoom={12} scrollWheelZoom={false}>
       <TileLayer
         attribution='Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
         maxZoom={18}
