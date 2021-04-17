@@ -13,7 +13,7 @@ const StyledMapContainer = styled(MapContainer) `
   z-index: 1;
 `;
 
-const Map: FC<MapProps> = ({position, boundaries}) => {
+const Map: FC<MapProps> = ({position, boundaries, places}) => {
   const UseMapComponent = () => {
     const map = useMap();
     
@@ -45,6 +45,12 @@ const Map: FC<MapProps> = ({position, boundaries}) => {
       {boundaries !== [] &&
         <Polygon pathOptions={purpleOptions} positions={boundaries} />
       }
+
+      {places.map((place) => {
+        return (
+          <Polygon pathOptions={purpleOptions} key={place._id} positions={place.borders} />
+        );
+      })}
     </StyledMapContainer>
   );
 };

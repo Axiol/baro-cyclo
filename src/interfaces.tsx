@@ -3,6 +3,7 @@ import { LatLngTuple } from "leaflet";
 export interface MapProps {
   position: LatLngTuple;
   boundaries: LatLngTuple[];
+  places: any[];
 }
 
 export interface GeocodingSuggestion {
