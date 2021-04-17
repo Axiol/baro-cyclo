@@ -1,4 +1,4 @@
-import { LatLngTuple } from 'leaflet';
+// import { LatLngTuple } from 'leaflet';
 import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { GeocodingSuggestion } from '../../interfaces';
@@ -85,34 +85,11 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
   });
 
   const handleSelect = ((place: GeocodingSuggestion) => {
-    const center = place.center.toString().split(',');
-    let polygon: LatLngTuple[] = [];
-    fetch(`https://nominatim.openstreetmap.org/reverse.php?lat=${center[0]}&lon=${center[1]}&zoom=10&format=jsonv2`).then((res: Response) => {
-      return res.json();
-    }).then((data: any) => {
-      // console.log(data.place_id);
-      fetch(`https://nominatim.openstreetmap.org/details.php?place_id=${data.place_id}&addressdetails=1&hierarchy=0&group_hierarchy=1&polygon_geojson=1&format=json`).then((res2: Response) => {
-        return res2.json();
-      }).then((data2: any) => {
-        // console.log(data2);
-        polygon = data2.geometry.coordinates[0];
-
-        // console.log(polygon);
-        const sortedPolygon: LatLngTuple[] = polygon.map((item) => {
-          return [item[1], item[0]];
-        });
-        // console.log(sortedPolygon);
-
-        onCitySelect(place.center, sortedPolygon);
-        setValue('');
-        setSuggestions([]);
-        setHighlight(-1);
-      }).catch((error2: any) => {
-        console.log(error2);
-      });
-    }).catch((error: any) => {
-      console.log(error);
-    });
+    console.log(place);
+    onCitySelect(place.center, place.borders);
+    setValue('');
+    setSuggestions([]);
+    setHighlight(-1);
   });
 
   return(

@@ -7,9 +7,10 @@ export interface MapProps {
 }
 
 export interface GeocodingSuggestion {
-  id: string;
+  _id: string;
   name: string;
   center: LatLngTuple;
+  borders: LatLngTuple[];
 }
 
 export interface SearchProps {

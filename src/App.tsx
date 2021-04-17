@@ -20,7 +20,6 @@ const App = () => {
   }, []);
 
   const onCitySelect = (center: LatLngTuple, polygon: LatLngTuple[]) => {
-    // console.log(polygon);
     setPosition(center);
     setBoundaries(polygon);
   };
