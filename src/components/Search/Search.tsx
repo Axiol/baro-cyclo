@@ -60,22 +60,10 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
   const [value, setValue] = useState<string>('');
   useEffect(() => {
     if(value !== '') {
-      fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${value}.json?access_token=${process.env.REACT_APP_MAPBOX_KEY}&country=BE&types=place`).then((res: Response) => {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/places/search/${value}`).then((res: Response) => {
         return res.json();
       }).then((data: any) => {
-        if(data.features) {
-          const newSuggestion: GeocodingSuggestion[] = data.features.map((item:any) => {
-            // console.log(item);
-            return {
-              id: item.id,
-              name: item.place_name,
-              center: [item.center[1], item.center[0]],
-            }
-          });
-
-          // console.log(newSuggestion);
-          setSuggestions([...newSuggestion]);
-        }
+        setSuggestions([...data]);
       }).catch((error: any) => {
         console.log(error)
       });
@@ -92,7 +80,6 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
       setHighlight(highlight + 1 > suggestions.length - 1 ? suggestions.length - 1 : highlight + 1);
     }
     if(e.key === 'Enter') {
-      // console.log(suggestions[highlight]);
       handleSelect(suggestions[highlight]);
     }
   });
