@@ -13,7 +13,7 @@ const StyledMapContainer = styled(MapContainer) `
   z-index: 1;
 `;
 
-const Map: FC<MapProps> = ({position, boundaries, places}) => {
+const Map: FC<MapProps> = ({position, boundaries, places, showAllPlaces}) => {
   const UseMapComponent = () => {
     const map = useMap();
     
@@ -46,11 +46,23 @@ const Map: FC<MapProps> = ({position, boundaries, places}) => {
         <Polygon pathOptions={purpleOptions} positions={boundaries} />
       }
 
-      {places.map((place) => {
-        return (
-          <Polygon pathOptions={purpleOptions} key={place._id} positions={place.borders} />
-        );
-      })}
+      {showAllPlaces &&
+        <>
+          {places.map((place) => {
+            return (
+              <Polygon 
+                key={place._id}
+                pathOptions={purpleOptions}
+                positions={place.borders}
+                eventHandlers={{
+                  click: () => {
+                    // console.log(place.name);
+                  }
+                }} />
+            );
+          })}
+        </>
+      }
     </StyledMapContainer>
   );
 };

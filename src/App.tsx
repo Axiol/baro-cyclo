@@ -8,6 +8,7 @@ const App = () => {
   const [position, setPosition] = useState<LatLngTuple>([50.6337, 5.56759]);
   const [boundaries, setBoundaries] = useState<LatLngTuple[]>([]);
   const [places, setPlaces] = useState([]);
+  const [showAllPlaces, setShowAllPlaces] = useState<boolean>(true);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/places`).then((res) => {
@@ -20,13 +21,14 @@ const App = () => {
   }, []);
 
   const onCitySelect = (center: LatLngTuple, polygon: LatLngTuple[]) => {
+    setShowAllPlaces(false);
     setPosition(center);
     setBoundaries(polygon);
   };
 
   return (
     <div>
-      <Map position={position} boundaries={boundaries} places={places} />
+      <Map position={position} boundaries={boundaries} places={places} showAllPlaces={showAllPlaces} />
       <Search onCitySelect={(center: LatLngTuple, polygon: LatLngTuple[]) => {onCitySelect(center, polygon)}} />
       {/* <InfoPanel /> */}
     </div>

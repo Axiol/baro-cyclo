@@ -85,7 +85,6 @@ const Search: FC<SearchProps> = ({onCitySelect}) => {
   });
 
   const handleSelect = ((place: GeocodingSuggestion) => {
-    console.log(place);
     onCitySelect(place.center, place.borders);
     setValue('');
     setSuggestions([]);

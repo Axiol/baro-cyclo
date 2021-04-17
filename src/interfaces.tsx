@@ -4,6 +4,7 @@ export interface MapProps {
   position: LatLngTuple;
   boundaries: LatLngTuple[];
   places: any[];
+  showAllPlaces: boolean;
 }
 
 export interface GeocodingSuggestion {
