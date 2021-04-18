@@ -7,6 +7,10 @@ export interface MapProps {
   showAllPlaces: boolean;
 }
 
+export interface RateBarProps {
+  big?: boolean | undefined;
+}
+
 export interface GeocodingSuggestion {
   _id: string;
   name: string;

@@ -22,7 +22,7 @@ const StyledInfoPanelTitle = styled.h2`
 const StyledSectionsList = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  margin: 15px -5px -20px -5px;
+  margin: 15px -5px -15px -5px;
 `;
 
 const StyledSection = styled.li`
@@ -30,8 +30,17 @@ const StyledSection = styled.li`
   margin: 0 5px 20px 5px;
 `;
 
-const StyledSectionTitle = styled.h3`
+const StyledSummarySeciton = styled.div`
+  margin: 20px 0 30px 0;
+`;
+
+const StyledSectionTitle = styled.h3<{big?: boolean}>`
   font-weight: bold;
+
+  ${props => props.big && `
+    font-size: 18px;
+    margin-bottom: 10px;
+  `}
 `;
 
 const InfoPanel: FC = () => {
@@ -39,6 +48,12 @@ const InfoPanel: FC = () => {
     <StyledInfoPanel>
       <StyledInfoPanelTitle>Liège</StyledInfoPanelTitle>
       <p>352 avis</p>
+
+      <StyledSummarySeciton>
+        <StyledSectionTitle big>Avis moyen</StyledSectionTitle>
+        <RateBar big />
+      </StyledSummarySeciton>
+
       <StyledSectionsList>
         <StyledSection>
           <StyledSectionTitle>Section avis</StyledSectionTitle>
